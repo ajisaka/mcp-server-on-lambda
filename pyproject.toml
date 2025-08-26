@@ -1,0 +1,48 @@
+[project]
+name = "mcp-server-on-lambda"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "ajisaka.seiya", email = "ajisaka.seiya@synergy101.jp" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi[standard]>=0.116.1",
+    "fastmcp>=2.11.3",
+    "mangum>=0.19.0",
+    "pydantic>=2.11.7",
+    "uvicorn>=0.35.0",
+]
+
+[dependency-groups]
+dev = [
+    "cfn-lint>=1.39.0",
+    "mypy>=1.17.1",
+    "pytest>=8.4.1",
+    "ruff>=0.12.10",
+]
+
+[tool.uv]
+package = true
+
+[project.scripts]
+app = "mcp_server_on_lambda.app:main"
+
+[tool.ruff.lint]
+select = ["I", "E4", "E7", "E9", "F", "W", "UP"]
+ignore = ["E741"]  # https://docs.astral.sh/ruff/rules/ambiguous-variable-name/
+fixable = ["ALL"]
+unfixable = []
+
+[tool.mypy]
+python_version = "3.12"
+warn_unused_configs = true
+show_error_codes = true
+check_untyped_defs = true
+namespace_packages = true
+disallow_untyped_defs = true
+
+# [[tool.mypy.overrides]]
+# module = "fitz"
+# ignore_missing_imports = true

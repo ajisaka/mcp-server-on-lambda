@@ -1,0 +1,52 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Meow is Meow
+
+Globals:
+  Function:
+    Timeout: 60
+
+Resources:
+  HelloWorldRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
+  HelloWorldFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      PackageType: Image
+      Role: !GetAtt HelloWorldRole.Arn
+      Environment:
+        Variables:
+          AWS_LWA_INVOKE_MODE: RESPONSE_STREAM
+          AWS_LWA_PORT: 8080
+          AWS_LWA_ENABLE_COMPRESSION: true
+          AWS_LWA_LOG_LEVEL: debug
+      FunctionUrlConfig:
+        AuthType: NONE
+        InvokeMode: RESPONSE_STREAM
+        Cors:
+          AllowCredentials: false
+          AllowMethods:
+            - GET
+            - POST
+          AllowOrigins:
+            - "*"
+    Metadata:
+      Dockertag: latest
+      DockerContext: .
+      Dockerfile: Dockerfile
+
+Outputs:
+  HelloWorldFunctionUrl:
+    Description: "Function URL for Hello World function"
+    Value: !GetAtt HelloWorldFunctionUrl.FunctionUrl
