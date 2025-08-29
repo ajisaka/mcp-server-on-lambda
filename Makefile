@@ -3,8 +3,7 @@ SAM_CONFIG_FILE=samconfig.toml
 
 .PHONY: dev
 dev:
-	# uv run python src/mcp_server_on_lambda/app.py
-	uv run fastapi dev src/mcp_server_on_lambda/app.py
+	uv run app
 
 .PHONY: deploy
 deploy: test
@@ -15,6 +14,7 @@ else
 endif
 	echo "SAM_CONFIG_FILE=$(SAM_CONFIG_FILE)"
 	echo "DEPLOY_OPTS=$(DEPLOY_OPTS)"
+	uv export --format requirements-txt --no-editable --no-dev | grep -v '^\.$$' > src/requirements.txt
 	sam build --use-container
 	sam deploy $(DEPLOY_OPTS) --config-file $(SAM_CONFIG_FILE) \
 		--no-confirm-changeset \
