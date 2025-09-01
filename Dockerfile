@@ -17,4 +17,3 @@ RUN uv pip install -r requirements.txt --system
 
 EXPOSE 8080
 ENTRYPOINT ["python"]
-CMD ["src/mcp_server_on_lambda/app.py"]

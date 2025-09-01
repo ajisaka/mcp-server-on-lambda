@@ -1,11 +1,6 @@
-import logging
-
 import uvicorn
 from fastmcp import FastMCP
 from pydantic import BaseModel
-
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger(__name__)
 
 
 class CalculationResult(BaseModel):

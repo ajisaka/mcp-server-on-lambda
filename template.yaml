@@ -20,7 +20,7 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
 
-  HelloWorldFunction:
+  McpFunction:
     Type: AWS::Serverless::Function
     Properties:
       PackageType: Image
@@ -41,12 +41,44 @@ Resources:
             - POST
           AllowOrigins:
             - "*"
+      ImageConfig:
+        Command: ["src/mcp_server_on_lambda/mcp_app.py"]
+    Metadata:
+      Dockertag: latest
+      DockerContext: .
+      Dockerfile: Dockerfile
+
+  ApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      PackageType: Image
+      Role: !GetAtt HelloWorldRole.Arn
+      Environment:
+        Variables:
+          AWS_LWA_INVOKE_MODE: RESPONSE_STREAM
+          AWS_LWA_PORT: 8080
+          AWS_LWA_ENABLE_COMPRESSION: true
+          AWS_LWA_LOG_LEVEL: debug
+      FunctionUrlConfig:
+        AuthType: NONE
+        InvokeMode: RESPONSE_STREAM
+        Cors:
+          AllowCredentials: false
+          AllowMethods:
+            - GET
+            - POST
+          AllowOrigins:
+            - "*"
+      ImageConfig:
+        Command: ["src/mcp_server_on_lambda/api_app.py"]
     Metadata:
       Dockertag: latest
       DockerContext: .
       Dockerfile: Dockerfile
 
 Outputs:
-  HelloWorldFunctionUrl:
-    Description: "Function URL for Hello World function"
-    Value: !GetAtt HelloWorldFunctionUrl.FunctionUrl
+  McpFunctionUrl:
+    Value: !GetAtt McpFunctionUrl.FunctionUrl
+
+  ApiFunctionUrl:
+    Value: !GetAtt ApiFunctionUrl.FunctionUrl

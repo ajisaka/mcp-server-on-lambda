@@ -3,8 +3,7 @@ SAM_CONFIG_FILE=samconfig.toml
 
 .PHONY: dev
 dev:
-	# uv run python src/mcp_server_on_lambda/app.py
-	uv run fastapi dev src/mcp_server_on_lambda/app.py
+	uv run python src/mcp_server_on_lambda/mcp_app.py
 
 .PHONY: deploy
 deploy: test
@@ -39,4 +38,4 @@ setup:
 
 .PHONY: build-container
 build-container:
-	docker build --build-arg LAMBDA_TASK_ROOT=/lambda -t mcp-server-on-lambda .
+	docker build -t mcp-server-on-lambda .
