@@ -3,8 +3,7 @@ SAM_CONFIG_FILE=samconfig.toml
 
 .PHONY: dev
 dev:
-	# uv run python src/mcp_server_on_lambda/app.py
-	uv run fastapi dev src/mcp_server_on_lambda/app.py
+	uv run app
 
 .PHONY: deploy
 deploy: test
