@@ -14,7 +14,7 @@ class CalculationResult(BaseModel):
 
 mcp = FastMCP("MCP Demo")
 mcp_app = mcp.http_app(
-    path="/mcp",
+    path="/",
     json_response=True,
     stateless_http=True,
     transport="streamable-http",
