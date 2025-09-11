@@ -15,6 +15,7 @@ else
 endif
 	echo "SAM_CONFIG_FILE=$(SAM_CONFIG_FILE)"
 	echo "DEPLOY_OPTS=$(DEPLOY_OPTS)"
+	uv export --format requirements-txt --no-editable --no-dev | grep -v '^\.$$' > src/requirements.txt
 	sam build --use-container
 	sam deploy $(DEPLOY_OPTS) --config-file $(SAM_CONFIG_FILE) \
 		--no-confirm-changeset \

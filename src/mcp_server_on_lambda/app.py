@@ -3,6 +3,7 @@ import logging
 import uvicorn
 from fastapi import FastAPI
 from fastapi_mcp import FastApiMCP
+from mangum import Mangum
 from pydantic import BaseModel
 
 logging.basicConfig(level=logging.DEBUG)
@@ -28,6 +29,9 @@ def tool_sub(x: int, y: int) -> CalculationResult:
 
 mcp_app = FastApiMCP(app)
 mcp_app.mount_http()
+
+
+lambda_handler = Mangum(app)
 
 
 def main() -> None:

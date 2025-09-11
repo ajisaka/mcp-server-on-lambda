@@ -23,14 +23,10 @@ Resources:
   HelloWorldFunction:
     Type: AWS::Serverless::Function
     Properties:
-      PackageType: Image
+      CodeUri: src/
+      Handler: mcp_server_on_lambda.app.lambda_handler
       Role: !GetAtt HelloWorldRole.Arn
-      Environment:
-        Variables:
-          AWS_LWA_INVOKE_MODE: RESPONSE_STREAM
-          AWS_LWA_PORT: 8080
-          AWS_LWA_ENABLE_COMPRESSION: true
-          AWS_LWA_LOG_LEVEL: debug
+      Runtime: python3.12
       FunctionUrlConfig:
         AuthType: NONE
         InvokeMode: RESPONSE_STREAM
@@ -41,10 +37,6 @@ Resources:
             - POST
           AllowOrigins:
             - "*"
-    Metadata:
-      Dockertag: latest
-      DockerContext: .
-      Dockerfile: Dockerfile
 
 Outputs:
   HelloWorldFunctionUrl:
