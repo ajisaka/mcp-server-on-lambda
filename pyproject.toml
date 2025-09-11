@@ -8,6 +8,7 @@ authors = [
 ]
 requires-python = ">=3.11"
 dependencies = [
+    "fastapi-mcp>=0.4.0",
     "fastapi[standard]>=0.116.1",
     "fastmcp>=2.11.3",
     "mangum>=0.19.0",
@@ -43,6 +44,6 @@ check_untyped_defs = true
 namespace_packages = true
 disallow_untyped_defs = true
 
-# [[tool.mypy.overrides]]
-# module = "fitz"
-# ignore_missing_imports = true
+[[tool.mypy.overrides]]
+module = "fastapi_mcp"
+ignore_missing_imports = true

@@ -1,7 +1,8 @@
 import logging
 
 import uvicorn
-from fastmcp import FastMCP
+from fastapi import FastAPI
+from fastapi_mcp import FastApiMCP
 from pydantic import BaseModel
 
 logging.basicConfig(level=logging.DEBUG)
@@ -12,27 +13,25 @@ class CalculationResult(BaseModel):
     value: int
 
 
-mcp = FastMCP("MCP Demo")
-mcp_app = mcp.http_app(
-    path="/",
-    json_response=True,
-    stateless_http=True,
-    transport="streamable-http",
-)
+app = FastAPI()
 
 
-@mcp.tool
+@app.get("/add", operation_id="add")
 def tool_add(x: int, y: int) -> CalculationResult:
     return CalculationResult(value=x + y)
 
 
-@mcp.tool
+@app.get("/sub", operation_id="sub")
 def tool_sub(x: int, y: int) -> CalculationResult:
     return CalculationResult(value=x - y)
 
 
+mcp_app = FastApiMCP(app)
+mcp_app.mount_http()
+
+
 def main() -> None:
-    uvicorn.run(mcp_app, host="0.0.0.0", port=8080)
+    uvicorn.run(app, host="0.0.0.0", port=8080)
 
 
 if __name__ == "__main__":
