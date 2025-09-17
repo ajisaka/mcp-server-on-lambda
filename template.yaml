@@ -19,6 +19,19 @@ Resources:
             Action: sts:AssumeRole
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: LambdaGetFunctionUrlConfigPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - lambda:GetFunctionUrlConfig
+                Resource: '*'
+              - Effect: Allow
+                Action:
+                  - secretsmanager:GetSecretValue
+                Resource: '*'
 
   HelloWorldFunction:
     Type: AWS::Serverless::Function
@@ -31,6 +44,8 @@ Resources:
           AWS_LWA_PORT: 8080
           AWS_LWA_ENABLE_COMPRESSION: true
           AWS_LWA_LOG_LEVEL: debug
+          MEOW_GOOGLE_CLIENT_SECRET_ID: "ajisaka-test-app-google-auth-secret"
+          MEOW_GOOGLE_CLIENT_ID: "1004015833436-6cf8pfbt639uo1tqas7u59a3ndg57tum.apps.googleusercontent.com"
       FunctionUrlConfig:
         AuthType: NONE
         InvokeMode: RESPONSE_STREAM
