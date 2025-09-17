@@ -4,6 +4,8 @@ import uvicorn
 from fastmcp import FastMCP
 from pydantic import BaseModel
 
+from mcp_server_on_lambda.auth import auth
+
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
@@ -12,7 +14,7 @@ class CalculationResult(BaseModel):
     value: int
 
 
-mcp = FastMCP("MCP Demo")
+mcp = FastMCP("MCP Demo", auth=auth)
 mcp_app = mcp.http_app(
     path="/",
     json_response=True,
